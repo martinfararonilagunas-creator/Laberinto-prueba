@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laberinto de Liderazgo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <section class="panel">
+      <div>
+        <p class="eyebrow">Actividad dinámica</p>
+        <h1>Laberinto de liderazgo</h1>
+        <p class="intro">
+          Avanza por un laberinto tradicional desde la única entrada hasta una de
+          las tres salidas. La salida A es fácil y representa un líder pésimo, la
+          B es media y la C es difícil porque representa a un líder responsable.
+        </p>
+      </div>
+
+      <div class="stats">
+        <div>
+          <span>Movimientos</span>
+          <strong id="moves">0</strong>
+        </div>
+        <div>
+          <span>Aciertos</span>
+          <strong id="questionsAnswered">0</strong>
+        </div>
+        <div>
+          <span>Errores</span>
+          <strong id="wrongAnswers">0</strong>
+        </div>
+      </div>
+
+      <button class="reset-btn" id="resetBtn" type="button">Reiniciar actividad</button>
+
+      <div class="legend">
+        <span><b class="dot start"></b>Inicio</span>
+        <span><b class="dot question"></b>Pregunta</span>
+        <span><b class="dot easy"></b>A fácil</span>
+        <span><b class="dot medium"></b>B medio</span>
+        <span><b class="dot hard"></b>C difícil</span>
+      </div>
+    </section>
+
+    <section class="game-area">
+      <div class="maze-wrap">
+        <div id="maze" class="maze"></div>
+      </div>
+
+      <div class="controls">
+        <button type="button" data-move="up" aria-label="Arriba">↑</button>
+        <div>
+          <button type="button" data-move="left" aria-label="Izquierda">←</button>
+          <button type="button" data-move="down" aria-label="Abajo">↓</button>
+          <button type="button" data-move="right" aria-label="Derecha">→</button>
+        </div>
+      </div>
+
+      <p class="hint">También puedes usar las flechas del teclado o las teclas W, A, S, D.</p>
+    </section>
+  </main>
+
+  <dialog id="questionModal" class="modal">
+    <form class="modal-content">
+      <p class="eyebrow">Pregunta dinámica</p>
+      <h2 id="questionTitle">Pregunta</h2>
+      <p id="questionText"></p>
+      <div id="answerList" class="answers"></div>
+      <p id="questionFeedback" class="modal-note"></p>
+    </form>
+  </dialog>
+
+  <div id="finishToast" class="finish-toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

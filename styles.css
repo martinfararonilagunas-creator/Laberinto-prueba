@@ -1,0 +1,404 @@
+:root {
+  --bg: #e8eefc;
+  --accent: #111111;
+  --blue-dark: #24446f;
+  --wall: #222222;
+  --path: #ffffff;
+  --player: #1d3557;
+  --easy: #2fbf71;
+  --medium: #f4a62a;
+  --hard: #ef4f5f;
+  --question: #7c3aed;
+  --card: #ffffff;
+  --text: #172033;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text);
+  background: linear-gradient(135deg, #f7f9ff, var(--bg));
+}
+
+button {
+  font: inherit;
+}
+
+.app {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 32px 0;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.panel,
+.game-area {
+  background: var(--card);
+  border: 1px solid #dbe3f4;
+  border-radius: 8px;
+  box-shadow: 0 18px 45px rgba(70, 91, 140, 0.14);
+}
+
+.panel {
+  padding: 24px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--blue-dark);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1,
+h2 {
+  margin: 0;
+  color: var(--blue-dark);
+}
+
+h1 {
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+.intro,
+.hint,
+.modal-note {
+  line-height: 1.55;
+  color: #4b5875;
+}
+
+.stats {
+  margin: 24px 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.stats div {
+  padding: 14px;
+  border-radius: 8px;
+  background: #f1f5ff;
+}
+
+.stats span {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 12px;
+  color: #5a6988;
+}
+
+.stats strong {
+  font-size: 26px;
+  color: var(--blue-dark);
+}
+
+.reset-btn,
+.answers button,
+.controls button {
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.reset-btn {
+  width: 100%;
+  padding: 12px 14px;
+  color: #fff;
+  background: var(--blue-dark);
+}
+
+.reset-btn:hover,
+.answers button:hover,
+.controls button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(36, 68, 111, 0.18);
+}
+
+.legend {
+  margin-top: 20px;
+  display: grid;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.legend span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.dot.start {
+  background: var(--player);
+}
+
+.dot.question {
+  background: var(--question);
+}
+
+.dot.easy {
+  background: var(--easy);
+}
+
+.dot.medium {
+  background: var(--medium);
+}
+
+.dot.hard {
+  background: var(--hard);
+}
+
+.game-area {
+  padding: 24px;
+}
+
+.maze-wrap {
+  overflow: auto;
+  padding: 20px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 2px solid var(--accent);
+}
+
+.maze {
+  --cell: clamp(7px, 0.86vw, 11px);
+  display: grid;
+  grid-auto-rows: var(--cell);
+  width: max-content;
+  margin: 0 auto;
+  background: #ffffff;
+}
+
+.cell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  user-select: none;
+}
+
+.wall {
+  background: var(--wall);
+}
+
+.path,
+.start-cell,
+.exit,
+.question-cell {
+  background: var(--path);
+}
+
+.player::before {
+  content: "";
+  position: absolute;
+  width: 72%;
+  height: 72%;
+  border-radius: 50%;
+  background: #ef233c;
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.18);
+  z-index: 3;
+}
+
+.start-cell::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 76%;
+  height: 76%;
+  border-radius: 50%;
+  background: #1d3557;
+  z-index: 2;
+}
+
+.question-cell::before {
+  content: "?";
+  position: absolute;
+  width: 115%;
+  height: 115%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--question);
+  z-index: 2;
+}
+
+.question-cell.answered::before {
+  content: "✓";
+  background: #16a34a;
+}
+
+.exit::before {
+  position: absolute;
+  width: 175%;
+  height: 175%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: #ef233c;
+  font-size: calc(var(--cell) * 0.92);
+  font-weight: 900;
+  box-shadow: 0 3px 8px rgba(17, 17, 17, 0.22);
+  z-index: 2;
+}
+
+.exit-a::before {
+  content: "A";
+}
+
+.exit-b::before {
+  content: "B";
+}
+
+.exit-c::before {
+  content: "C";
+}
+
+.controls {
+  margin: 18px auto 8px;
+  width: min(240px, 100%);
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+
+.controls div {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+
+.controls button {
+  width: 64px;
+  height: 44px;
+  padding: 0;
+  color: #fff;
+  background: var(--blue-dark);
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.hint {
+  margin: 12px 0 0;
+  text-align: center;
+  font-size: 14px;
+}
+
+.modal {
+  width: min(520px, calc(100% - 32px));
+  border: 0;
+  border-radius: 8px;
+  padding: 0;
+  box-shadow: 0 30px 70px rgba(23, 32, 51, 0.32);
+}
+
+.modal::backdrop {
+  background: rgba(23, 32, 51, 0.45);
+}
+
+.modal-content {
+  padding: 24px;
+}
+
+.answers {
+  margin-top: 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.answers button {
+  padding: 12px 14px;
+  text-align: left;
+  color: var(--blue-dark);
+  background: #eef3ff;
+}
+
+.modal-note {
+  min-height: 22px;
+  margin-bottom: 0;
+}
+
+.modal-note.is-error {
+  color: #b42318;
+  font-weight: 700;
+}
+
+.modal-note:empty {
+  display: none;
+}
+
+.finish-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%) translateY(120px);
+  max-width: min(520px, calc(100% - 32px));
+  padding: 16px 18px;
+  border-radius: 8px;
+  color: #fff;
+  background: var(--blue-dark);
+  box-shadow: 0 20px 45px rgba(23, 32, 51, 0.25);
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.finish-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 900px) {
+  .app {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .app {
+    width: min(100% - 20px, 1180px);
+    padding: 16px 0;
+  }
+
+  .panel,
+  .game-area {
+    padding: 16px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .maze-wrap {
+    padding: 12px;
+  }
+}
